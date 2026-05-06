@@ -4,28 +4,40 @@
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.7.4" }
     },
-    "routes": [
-        {
-            "src": "/build/(.*)",
-            "dest": "/public/build/"
-        },
-        {
-            "src": "/css/(.*)",
-            "dest": "/public/css/"
-        },
-        {
-            "src": "/js/(.*)",
-            "dest": "/public/js/"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/api/index.php"
-        }
-    ],
+ "headers": [
+    {
+      "source": "/livewire/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "src": "/livewire/(.*)",
+      "dest": "/api/index.php"
+    },
+    {
+      "src": "/build/(.*)",
+      "dest": "/public/build/$1"
+    },
+    {
+      "src": "/css/(.*)",
+      "dest": "/public/css/$1"
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "/public/js/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    }
+  ],
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "",
+        "APP_URL": "https://esmart-bmn.vercel.app",
         "APP_KEY":"base64:ru3dSPJstQeV121JGqcaoh5LNlabKfF99fombagQoXI=",
  
         "APP_CONFIG_CACHE": "/tmp/config.php",
