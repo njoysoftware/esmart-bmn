@@ -20,7 +20,7 @@ class RkbmnResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookmark;
 
-    protected static ?string $recordTitleAttribute = 'jenis_rekomendasi';
+    protected static ?string $recordTitleAttribute = 'nama_barang.barang';
 
     public static function form(Schema $schema): Schema
     {
