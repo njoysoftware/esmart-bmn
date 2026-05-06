@@ -493,7 +493,8 @@ class LaporanController extends Controller
     // =========================
     private function download($phpWord, $filename)
     {
-        $path = storage_path($filename);
+        // $path = storage_path($filename);
+        $path = sys_get_temp_dir() . '/' . uniqid() . '-' . $filename;
         IOFactory::createWriter($phpWord, 'Word2007')->save($path);
 
         return response()->download($path)->deleteFileAfterSend(true);
