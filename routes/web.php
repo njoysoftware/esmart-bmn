@@ -17,11 +17,7 @@ Route::get('/laporan/semua', [LaporanController::class, 'semua']);
 
 
 Route::get('/template/template-bmn.xlsx', function () {
-    $file = public_path('storage/template/template-bmn.xlsx');
-
-    if (!File::exists($file)) {
-        abort(404);
-    }
+    $file = public_path('template/template-bmn.xlsx');
 
     return Response::download($file);
-});
+})->name('template.download');
