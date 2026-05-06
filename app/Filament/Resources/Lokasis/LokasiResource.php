@@ -20,7 +20,7 @@ class LokasiResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAsiaAustralia;
 
-    protected static ?string $recordTitleAttribute = 'Lokasi';
+    protected static ?string $recordTitleAttribute = 'nama_ruang';
 
     public static function form(Schema $schema): Schema
     {
