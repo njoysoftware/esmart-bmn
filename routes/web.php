@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LaporanController;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\File;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Route::get('/laporan/barang', [LaporanController::class, 'barang']);
+Route::get('/laporan/maintenance', [LaporanController::class, 'maintenance']);
+Route::get('/laporan/rkbmn', [LaporanController::class, 'rkbmn']);
+Route::get('/laporan/semua', [LaporanController::class, 'semua']);
+
+
+Route::get('/template/template-bmn.xlsx', function () {
+    $file = public_path('storage/template/template-bmn.xlsx');
+
+    if (!File::exists($file)) {
+        abort(404);
+    }
+
+    return Response::download($file);
+});
