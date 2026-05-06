@@ -20,7 +20,7 @@ class MaintenanceResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedServerStack;
 
-    protected static ?string $recordTitleAttribute = 'Maintenance';
+    protected static ?string $recordTitleAttribute = 'barang_id';
 
     public static function form(Schema $schema): Schema
     {
