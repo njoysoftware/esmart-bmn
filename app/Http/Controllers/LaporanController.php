@@ -156,10 +156,6 @@ class LaporanController extends Controller
 
         $no = 1;
         $data = Barang::with('lokasi')
-            ->when($start && $end, function ($q) use ($start, $end) {
-                $q->whereDate('created_at', '>=', $start)
-                    ->whereDate('created_at', '<=', $end);
-            })
             ->get();
 
         foreach ($data as $b) {
