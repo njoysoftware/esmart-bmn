@@ -27,12 +27,21 @@ use Illuminate\Support\Facades\Gate;
 
 class AdminPanelProvider extends PanelProvider
 {
+
+
+    public function boot(): void
+    {
+        if ($this->app->environment('production')) {
+            \URL::forceScheme('https');
+        }
+    }
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
+            ->authGuard('Web')
             ->brandName('SMART BMN')
             ->login()
             ->colors([
