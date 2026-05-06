@@ -53,6 +53,10 @@ class BarangsTable
                     ->label('NUP')
                     ->sortable()
                     ->searchable(),
+        TextColumn::make('nama_barang')
+                    ->label('Nama Barang')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('merk')
                     ->label('Merk')
                     ->sortable()
