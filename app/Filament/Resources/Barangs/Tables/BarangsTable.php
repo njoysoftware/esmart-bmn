@@ -29,12 +29,13 @@ class BarangsTable
                         ->form([
                             FileUpload::make('file')
                                 ->required()
+->disk('tmp')
                                 ->acceptedFileTypes([
                                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                                 ])
                         ])
                         ->action(function (array $data) {
-                            Excel::import(new BarangImport, $data['file']);
+                            Excel::import(new BarangImport, 'tmp/'. $data['file']);
                         }),
                     Action::make('download_template')
                         ->label('Download Template')
