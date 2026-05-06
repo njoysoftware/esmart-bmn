@@ -31,9 +31,9 @@ class AdminPanelProvider extends PanelProvider
 
     public function boot(): void
     {
-        if ($this->app->environment('production')) {
-            \URL::forceScheme('https');
-        }
+        Gate::define('access-filament', function (User $user) {
+            return $user->role === 'admin';
+        });
     }
     public function panel(Panel $panel): Panel
     {
@@ -41,7 +41,6 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->authGuard('Web')
             ->brandName('SMART BMN')
             ->login()
             ->colors([
