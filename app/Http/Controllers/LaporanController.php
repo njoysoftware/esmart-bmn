@@ -20,7 +20,7 @@ class LaporanController extends Controller
 
         // LOGO
         $table->addCell(2000)->addImage(
-            public_path('logo_bawaslu.png'),
+            public_path('logo.png'),
             ['width' => 80]
         );
 
