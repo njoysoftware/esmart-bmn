@@ -28,19 +28,13 @@ use Illuminate\Support\Facades\Gate;
 class AdminPanelProvider extends PanelProvider
 {
 
-
-    public function boot(): void
-    {
-        Gate::define('access-filament', function (User $user) {
-            return true;
-        });
-    }
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
+            ->authGuard('web')
             ->brandName('SMART BMN')
             ->login()
             ->colors([
