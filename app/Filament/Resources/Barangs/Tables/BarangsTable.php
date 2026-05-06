@@ -40,7 +40,7 @@ class BarangsTable
                         ->label('Download Template')
                         ->color('secondary')
                         ->icon('heroicon-o-arrow-down-tray')
-                        ->url(asset('template/template-bmn.xlsx'), true)
+                        ->url(public_path('template/template-bmn.xlsx'), true)
                         ->openUrlInNewTab()
                 ]
             )
