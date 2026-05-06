@@ -36,7 +36,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->spa(false)
             ->authGuard('web')
-            ->brandName('SMART BMN')
+            ->favicon(asset('favicon.ico'))
+            ->brandName('E SMART BMN')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
