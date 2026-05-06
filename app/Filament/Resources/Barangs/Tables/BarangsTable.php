@@ -30,13 +30,22 @@ class BarangsTable
                             FileUpload::make('file')
                                 ->required()
 ->disk('tmp')
-                                ->acceptedFileTypes([
+->directory('imports')                              ->acceptedFileTypes([
                                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                                 ])
                         ])
                         ->action(function (array $data) {
-                            Excel::import(new BarangImport, 'tmp/'. $data['file']);
-                        }),
+    $tmpPath = '/tmp/imports/' . $data['file'];
+    
+    // Upload ke Vercel Blob
+    $url = \App\Services\VercelBlobService::upload(
+        $tmpPath, 
+        'imports/' . $data['file']
+    );
+    
+    // Import Excel dari URL
+    Excel::import(new BarangImport, $url);
+}),
                     Action::make('download_template')
                         ->label('Download Template')
                         ->color('secondary')
