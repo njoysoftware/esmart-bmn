@@ -7,6 +7,7 @@
     <title>SMART BMN</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body {
             margin: 0;
@@ -109,7 +110,7 @@
     <div class="container">
 
         <!-- LOGO BAWASLU -->
-        <img src="{{ asset('storage/logo.png') }}" class="logo" alt="Bawaslu">
+        <img src="{{ asset('logo.png') }}" class="logo" alt="Bawaslu">
 
         <h1 class="title">SMART BMN</h1>
 
