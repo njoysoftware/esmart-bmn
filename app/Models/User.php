@@ -48,7 +48,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    /*  public function canAccessPanel(Panel $panel): bool
+    public function canAccessPanel(Panel $panel): bool
     {
         return true; // sementara untuk test dulu
     }
@@ -61,5 +61,5 @@ class User extends Authenticatable
     public function isUser(): bool
     {
         return $this->role === 'user';
-    } */
+    }
 }
