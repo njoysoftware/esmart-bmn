@@ -3,21 +3,44 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\UploadedFile;
+use Exception;
+use VercelBlobPhp\Client;
+use VercelBlobPhp\CommonCreateBlobOptions;
 
 class VercelBlobService
 {
-    public static function upload(string $filePath, string $filename): string
-    {
-        $token = env('BLOB_READ_WRITE_TOKEN');
-        
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-            'x-content-type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        ])->withBody(
-            file_get_contents($filePath),
-            'application/octet-stream'
-        )->put("https://blob.vercel-storage.com/{$filename}");
+    protected $client;
 
-        return $response->json('url');
+    public function __construct()
+    {
+        $this->client = new Client();
+    }
+
+    public function upload(UploadedFile $file, string $folder = 'imports')
+    {
+        try {
+            $fileName = $folder . '/' . time() . '-' . $file->getClientOriginalName();
+
+            // Baca isi file
+            $content = file_get_contents($file->getRealPath());
+            // Konfigurasi sesuai spesifikasi package
+            $options = new CommonCreateBlobOptions(
+                addRandomSuffix: true,
+                contentType: $file->getMimeType(), // Otomatis deteksi (misal: application/vnd.ms-excel)
+                cacheControlMaxAge: 3600,
+                allowOverwrite: true
+            );
+
+            // Upload ke Vercel Blob
+            // Eksekusi put sesuai struktur package
+            return $this->client->put(
+                path: $fileName,
+                content: file_get_contents($file->getRealPath()),
+                options: $options
+            );
+        } catch (Exception $e) {
+            throw new Exception("Gagal unggah ke Vercel Blob: " . $e->getMessage());
+        }
     }
 }

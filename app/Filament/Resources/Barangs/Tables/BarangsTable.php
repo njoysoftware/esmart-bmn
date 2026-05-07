@@ -14,7 +14,9 @@ use App\Imports\BarangImport;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use App\Models\Lokasi;
-use Illuminate\Support\Facades\Storage;
+use App\Services\VercelBlobService;
+use Filament\Notifications\Notification;
+use Exception;
 
 
 class BarangsTable
@@ -31,17 +33,26 @@ class BarangsTable
                         ->form([
                             FileUpload::make('file')
                                 ->required()
-                                ->disk('public')
-                                ->directory('imports')
-                                ->moveFile()
-                                ->acceptedFileTypes([
-                                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                                ])
+                                ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv'])
                         ])
-                        ->action(function (array $data) {
-                            $path = public_path('imports/' . $data['file']);
-                            // Import Excel dari URL
-                            Excel::import(new BarangImport, $path);
+                        ->action(function (array $data, VercelBlobService $service) {
+                            $file = $data['file'];
+                            try {
+                                // Panggil service kita
+                                $result = $service->upload($file);
+                                $path = $file->getRealPath();
+                                // Import Excel dari URL
+                                Excel::import(new BarangImport, $path);
+                                Notification::make()
+                                    ->title('Berhasil!')
+                                    ->body('Data berhasil diimpor.')
+                                    ->success()
+                                    ->send();
+                            } catch (Exception $e) {
+                                // Tangani error jika upload gagal
+                                // Contoh: Log error atau tampilkan pesan kepada pengguna
+                                throw new Exception("Gagal unggah ke Data: " . $e->getMessage());
+                            }
                         }),
                     Action::make('download_template')
                         ->label('Download Template')
