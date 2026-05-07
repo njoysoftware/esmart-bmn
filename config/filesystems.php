@@ -48,8 +48,8 @@ return [
         ],
         'tmp' => [
             'driver' => 'local',
-            'root' => env('VERCEL') ? '/tmp' : storage_path('app'),
-            'throw' => false,
+            'root' => env('VERCEL') ? '/tmp' : storage_path('app/tmp'),
+            'throw' => true,
             'report' => false,
         ],
         's3' => [

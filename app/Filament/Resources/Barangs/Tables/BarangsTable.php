@@ -16,6 +16,7 @@ use Filament\Forms\Components\FileUpload;
 use App\Models\Lokasi;
 use App\Services\VercelBlobService;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Storage;
 use Exception;
 
 
@@ -33,6 +34,7 @@ class BarangsTable
                         ->form([
                             FileUpload::make('file')
                                 ->required()
+                                ->disk('tmp')
                                 ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv'])
                         ])
                         ->action(function (array $data, VercelBlobService $service) {
@@ -40,7 +42,7 @@ class BarangsTable
                             try {
                                 // Panggil service kita
                                 $result = $service->upload($file);
-                                $path = $file->getRealPath();
+                                $path = Storage::disk('tmp')->path($file);
                                 // Import Excel dari URL
                                 Excel::import(new BarangImport, $path);
                                 Notification::make()

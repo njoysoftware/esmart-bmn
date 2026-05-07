@@ -36,7 +36,7 @@ class VercelBlobService
             // Eksekusi put sesuai struktur package
             return $this->client->put(
                 path: $fileName,
-                content: file_get_contents($file->getRealPath()),
+                content: $content,
                 options: $options
             );
         } catch (Exception $e) {
