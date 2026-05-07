@@ -129,8 +129,8 @@ class BarangsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    BulkAction::make('update_status_kondisi')
-                        ->label('Update Status & Kondisi')
+                    BulkAction::make('update_status')
+                        ->label('Update Status')
                         ->icon('heroicon-o-pencil-square')
                         ->color('warning')
 
@@ -142,7 +142,25 @@ class BarangsTable
                                     'Tidak Aktif' => 'Tidak Aktif',
                                 ])
                                 ->required(),
+                        ])
 
+                        ->action(function (array $data_status, $records_status) {
+
+                            foreach ($records_status as $records_status) {
+                                $records_status->update([
+                                    'status_bmn' => $data_status['status_bmn'],
+                                ]);
+                            }
+                        })
+
+                        ->deselectRecordsAfterCompletion(),
+
+                    BulkAction::make('update_kondisi')
+                        ->label('Update Kondisi')
+                        ->icon('heroicon-o-pencil-square')
+                        ->color('warning')
+
+                        ->form([
                             Select::make('kondisi')
                                 ->label('Kondisi')
                                 ->options([
@@ -153,20 +171,71 @@ class BarangsTable
                                 ->required(),
                         ])
 
-                        ->action(function (array $data, $records) {
+                        ->action(function (array $data_kondisi, $records_kondisi) {
 
-                            foreach ($records as $record) {
-                                $record->update([
-                                    'status_bmn' => $data['status_bmn'],
-                                    'kondisi' => $data['kondisi'],
+                            foreach ($records_kondisi as $records_kondisi) {
+                                $records_kondisi->update([
+                                    'kondisi' => $data_kondisi['kondisi'],
+                                ]);
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion(),
+                    DeleteBulkAction::make(),
+                ]),
+                BulkActionGroup::make([
+                    BulkAction::make('update_status')
+                        ->label('Update Status')
+                        ->icon('heroicon-o-pencil-square')
+                        ->color('warning')
+
+                        ->form([
+                            Select::make('status_bmn')
+                                ->label('Status')
+                                ->options([
+                                    'Aktif' => 'Aktif',
+                                    'Tidak Aktif' => 'Tidak Aktif',
+                                ])
+                                ->required(),
+                        ])
+
+                        ->action(function (array $data_status, $records_status) {
+
+                            foreach ($records_status as $records_status) {
+                                $records_status->update([
+                                    'status_bmn' => $data_status['status_bmn'],
                                 ]);
                             }
                         })
 
                         ->deselectRecordsAfterCompletion(),
-                    DeleteBulkAction::make(),
-                ]),
 
+                    BulkAction::make('update_kondisi')
+                        ->label('Update Kondisi')
+                        ->icon('heroicon-o-pencil-square')
+                        ->color('warning')
+
+                        ->form([
+                            Select::make('kondisi')
+                                ->label('Kondisi')
+                                ->options([
+                                    'Baik' => 'Baik',
+                                    'Rusak Ringan' => 'Rusak Ringan',
+                                    'Rusak Berat' => 'Rusak Berat',
+                                ])
+                                ->required(),
+                        ])
+
+                        ->action(function (array $data_kondisi, $records_kondisi) {
+
+                            foreach ($records_kondisi as $records_kondisi) {
+                                $records_kondisi->update([
+                                    'kondisi' => $data_kondisi['kondisi'],
+                                ]);
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion(),
+                    DeleteBulkAction::make(),
+                ])
             ]);
     }
 }
