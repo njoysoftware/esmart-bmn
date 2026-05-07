@@ -43,10 +43,10 @@ class BarangsTable
                             $filePath  = $data['file'];
                             $disk = Storage::disk('tmp');
                             $fullPath = $disk->path($filePath);
-                            $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
+                            // $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
                             try {
                                 // Panggil service kita
-                                $result = $service->upload($fileObject);
+                                //   $result = $service->upload($fileObject);
                                 // Import Excel dari URL
                                 Excel::import(new BarangImport, $fullPath);
                                 $disk->delete($filePath);
