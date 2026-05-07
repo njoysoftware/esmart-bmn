@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Barangs\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use App\Filament\Resources\Barangs\BarangResource;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -33,7 +34,7 @@ class BarangsTable
                     Action::make('create')
                         ->label('Tambah Barang')
                         ->icon('heroicon-o-plus')
-                        ->url(route('filament.resources.barangs.create')),
+                        ->url(BarangResource::getUrl('create')),
                 ]
             )
             ->columns([
