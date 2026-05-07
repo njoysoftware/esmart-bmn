@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
+use Livewire\Livewire;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,3 +22,8 @@ Route::get('/template/template-bmn.xlsx', function () {
 
     return Response::download($file);
 })->name('template.download');
+
+
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/livewire/update', $handle);
+});
