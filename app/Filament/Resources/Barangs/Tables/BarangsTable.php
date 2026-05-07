@@ -17,7 +17,9 @@ use App\Models\Lokasi;
 use App\Services\VercelBlobService;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Exception;
+use Illuminate\Support\Facades\File;
 
 
 class BarangsTable
@@ -38,13 +40,17 @@ class BarangsTable
                                 ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv'])
                         ])
                         ->action(function (array $data, VercelBlobService $service) {
-                            $file = $data['file'];
+                            $filePath  = $data['file'];
+                            $disk = Storage::disk('tmp');
+                            $fullPath = $disk->path($filePath);
+                            $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
                             try {
                                 // Panggil service kita
-                                $result = $service->upload($file);
-                                $path = Storage::disk('tmp')->path($file);
+                                $result = $service->upload($fileObject);
                                 // Import Excel dari URL
-                                Excel::import(new BarangImport, $path);
+                                Excel::import(new BarangImport, $fullPath);
+                                $disk->delete($filePath);
+
                                 Notification::make()
                                     ->title('Berhasil!')
                                     ->body('Data berhasil diimpor.')

@@ -17,7 +17,7 @@ class VercelBlobService
         $this->client = new Client();
     }
 
-    public function upload(UploadedFile $file, string $folder = 'imports')
+    public function upload(UploadedFile $file, string $folder = 'tmp')
     {
         try {
             $fileName = $folder . '/' . time() . '-' . $file->getClientOriginalName();
