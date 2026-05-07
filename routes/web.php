@@ -28,6 +28,7 @@ Livewire::setUpdateRoute(function ($handle) {
     return Route::post('/livewire/update', $handle);
 });
 
+
 Route::get('/debug-time', function () {
     return [
         'server_time' => now()->toDateTimeString(),
