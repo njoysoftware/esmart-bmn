@@ -9,6 +9,7 @@ use App\Models\Rkbmn;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Style\Section;
+use Carbon\Carbon;
 
 class LaporanController extends Controller
 {
@@ -128,8 +129,8 @@ class LaporanController extends Controller
 
         // KOP
         $this->kopSurat($section);
-        $start = request('start');
-        $end = request('end');
+        $start = Carbon::parse(request('start'));
+        $end = Carbon::parse(request('end'));
         $tanggal_start =  $start->translatedFormat('d F Y');
         $tanggal_end =  $end->translatedFormat('d F Y');
         $section->addText('LAPORAN DATA BARANG', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
@@ -208,8 +209,11 @@ class LaporanController extends Controller
 
         // KOP
         $this->kopSurat($section);
-        $start = request('start');
-        $end = request('end');
+        // $start = request('start');
+        // $end = request('end');
+        $start = Carbon::parse(request('start'));
+        $end = Carbon::parse(request('end'));
+
         $tanggal_start =  $start->translatedFormat('d F Y');
         $tanggal_end =  $end->translatedFormat('d F Y');
 
@@ -282,8 +286,8 @@ class LaporanController extends Controller
 
         // KOP
         $this->kopSurat($section);
-        $start = request('start');
-        $end = request('end');
+        $start = Carbon::parse(request('start'));
+        $end = Carbon::parse(request('end'));
         $tanggal_start =  $start->translatedFormat('d F Y');
         $tanggal_end =  $end->translatedFormat('d F Y');
 
@@ -355,8 +359,8 @@ class LaporanController extends Controller
         ]);
         // KOP
         $this->kopSurat($section);
-        $start = request('start');
-        $end = request('end');
+        $start = Carbon::parse(request('start'));
+        $end = Carbon::parse(request('end'));
         $tanggal_start =  $start->translatedFormat('d F Y');
         $tanggal_end =  $end->translatedFormat('d F Y');
 
