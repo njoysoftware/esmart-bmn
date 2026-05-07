@@ -48,7 +48,7 @@ class BarangsTable
                                 // Panggil service kita
                                 $service->upload($fileObject, 'tmp');
                                 // Import Excel dari URL
-                                //    Excel::import(new BarangImport, $fullPath);
+                                Excel::import(new BarangImport, $fullPath);
                                 //    $disk->delete($filePath);
 
                                 Notification::make()
