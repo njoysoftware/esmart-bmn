@@ -393,10 +393,6 @@ class LaporanController extends Controller
 
         $no = 1;
         $data_barang = Barang::with('lokasi')
-            ->when($start && $end, function ($q) use ($start, $end) {
-                $q->whereDate('created_at', '>=', $start)
-                    ->whereDate('created_at', '<=', $end);
-            })
             ->get();
 
         foreach ($data_barang as $b) {
@@ -469,8 +465,6 @@ class LaporanController extends Controller
         $table->addCell(8000, $cellHeader)->addText('Alasan', $headerStyle, $center);
 
         $no = 1;
-        $start = request('start');
-        $end = request('end');
         $data_rkbmn = Rkbmn::with('barang')
             ->when($start && $end, function ($q) use ($start, $end) {
                 $q->whereDate('created_at', '>=', $start)
