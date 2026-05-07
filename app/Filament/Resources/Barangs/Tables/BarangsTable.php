@@ -39,7 +39,7 @@ class BarangsTable
                                 ->disk('tmp')
                                 ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv'])
                         ])
-                        ->action(function (array $data, VercelBlobService $service) {
+                        ->action(function (array $data) {
                             $filePath  = $data['file'];
                             $disk = Storage::disk('tmp');
                             $fullPath = $disk->path($filePath);
