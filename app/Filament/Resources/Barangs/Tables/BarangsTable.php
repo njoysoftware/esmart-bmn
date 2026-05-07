@@ -110,7 +110,6 @@ class BarangsTable
                     BulkAction::make('update_status')
                         ->label('Update Status')
                         ->icon('heroicon-o-pencil-square')
-                        ->color('warning')
 
                         ->form([
                             Select::make('status_bmn')
@@ -136,7 +135,6 @@ class BarangsTable
                     BulkAction::make('update_kondisi')
                         ->label('Update Kondisi')
                         ->icon('heroicon-o-pencil-square')
-                        ->color('success')
 
                         ->form([
                             Select::make('kondisi')
@@ -162,12 +160,13 @@ class BarangsTable
                 ])
                     ->Label('Tindakan Massal')
                     ->icon('heroicon-m-ellipsis-vertical')
+                    ->color('warning')
                     ->size(ActionSize::Small),
 
 
                 Action::make('import')
                     ->label('Import Excel')
-                    ->color('success')
+                    ->color('primary')
                     ->icon('heroicon-o-arrow-up-tray')
                     ->form([
                         FileUpload::make('file')
