@@ -27,3 +27,12 @@ Route::get('/template/template-bmn.xlsx', function () {
 Livewire::setUpdateRoute(function ($handle) {
     return Route::post('/livewire/update', $handle);
 });
+
+Route::get('/debug-time', function () {
+    return [
+        'server_time' => now()->toDateTimeString(),
+        'utc_time' => now('UTC')->toDateTimeString(),
+        'timestamp' => time(),
+        'timezone' => config('app.timezone'),
+    ];
+});
