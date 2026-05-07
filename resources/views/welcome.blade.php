@@ -109,7 +109,7 @@
     <div class="container">
 
         <!-- LOGO BAWASLU -->
-        <img src="{{ asset('logo.png') }}" class="logo" alt="Bawaslu">
+        <img src="https://84my245mydslgwjz.public.blob.vercel-storage.com/logo.png" class="logo" alt="Bawaslu">
 
         <h1 class="title">SMART BMN</h1>
 

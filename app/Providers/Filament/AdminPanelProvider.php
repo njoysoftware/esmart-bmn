@@ -36,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->spa(false)
             ->authGuard('web')
-            ->favicon(asset('favicon.ico'))
+            ->favicon('https://84my245mydslgwjz.public.blob.vercel-storage.com/favicon.ico')
             ->brandName('E SMART BMN')
             ->login()
             ->colors([

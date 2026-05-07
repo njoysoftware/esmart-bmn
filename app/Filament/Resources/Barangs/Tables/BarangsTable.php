@@ -14,6 +14,8 @@ use App\Imports\BarangImport;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use App\Models\Lokasi;
+use Illuminate\Support\Facades\Storage;
+
 
 class BarangsTable
 {
@@ -24,28 +26,22 @@ class BarangsTable
                 [
                     Action::make('import')
                         ->label('Import Excel')
-                        ->color('grey')
+                        ->color('success')
                         ->icon('heroicon-o-arrow-up-tray')
                         ->form([
                             FileUpload::make('file')
                                 ->required()
-->disk('tmp')
-->directory('imports')                              ->acceptedFileTypes([
+                                ->disk('tmp')
+                                ->directory('imports')
+                                ->acceptedFileTypes([
                                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                                 ])
                         ])
                         ->action(function (array $data) {
-    $tmpPath = '/tmp/imports/' . $data['file'];
-    
-    // Upload ke Vercel Blob
-    $url = \App\Services\VercelBlobService::upload(
-        $tmpPath, 
-        'imports/' . $data['file']
-    );
-    
-    // Import Excel dari URL
-    Excel::import(new BarangImport, $url);
-}),
+                            $path = Storage::disk('tmp')->path($data['file']);
+                            // Import Excel dari URL
+                            Excel::import(new BarangImport, $path);
+                        }),
                     Action::make('download_template')
                         ->label('Download Template')
                         ->color('secondary')
@@ -63,7 +59,7 @@ class BarangsTable
                     ->label('NUP')
                     ->sortable()
                     ->searchable(),
-        TextColumn::make('nama_barang')
+                TextColumn::make('nama_barang')
                     ->label('Nama Barang')
                     ->sortable()
                     ->searchable(),
