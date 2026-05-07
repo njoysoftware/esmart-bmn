@@ -46,7 +46,7 @@ class BarangsTable
                             $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
                             try {
                                 // Panggil service kita
-                                $service->upload($fileObject, 'uploads');
+                                $service->upload($fileObject, 'tmp');
                                 // Import Excel dari URL
                                 //    Excel::import(new BarangImport, $fullPath);
                                 //    $disk->delete($filePath);
