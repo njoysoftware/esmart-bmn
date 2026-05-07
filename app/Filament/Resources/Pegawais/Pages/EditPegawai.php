@@ -16,4 +16,8 @@ class EditPegawai extends EditRecord
             DeleteAction::make(),
         ];
     }
+    protected function getRedirectUrl(): string
+    {
+        return url('/admin/pegawais');
+    }
 }
