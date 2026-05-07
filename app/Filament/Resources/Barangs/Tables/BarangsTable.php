@@ -45,8 +45,20 @@ class BarangsTable
                             $fullPath = $disk->path($filePath);
                             $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
                             try {
+                                $token = env('BLOB_READ_WRITE_TOKEN');
+                                $fileName = 'excels/' . time() . '-' . basename($fullPath);
+
+                                $response = \Illuminate\Support\Facades\Http::withToken($token)
+                                    ->withBody(file_get_contents($fullPath), \Illuminate\Support\Facades\File::mimeType($fullPath))
+                                    ->put("https://vercel-storage.com" . $fileName . "?api_version=1");
+
+                                if ($response->failed()) {
+                                    throw new \Exception("Gagal API: " . $response->body());
+                                }
+
+
                                 // Panggil service kita
-                                $service->upload($fileObject, 'uploads');
+                                //  $service->upload($fileObject, 'uploads');
                                 // Import Excel dari URL
                                 Excel::import(new BarangImport, $fullPath);
                                 $disk->delete($filePath);
