@@ -74,7 +74,7 @@ class Laporan extends Page implements HasForms
                 ->url(fn() => $this->generateUrl('/laporan/semua'), true),
         ];
     }
-    private function generateUrl($path)
+    private function generateUrl(string $path): string
     {
         $data = $this->form->getState();
 
