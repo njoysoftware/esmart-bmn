@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Exception;
 use Illuminate\Support\Facades\File;
+use Filament\Actions\BulkAction;
+use Filament\Forms\Components\Select;
 
 
 class BarangsTable
@@ -127,6 +129,41 @@ class BarangsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    BulkAction::make('update_status_kondisi')
+                        ->label('Update Status & Kondisi')
+                        ->icon('heroicon-o-pencil-square')
+                        ->color('warning')
+
+                        ->form([
+                            Select::make('status_bmn')
+                                ->label('Status')
+                                ->options([
+                                    'Aktif' => 'Aktif',
+                                    'Tidak Aktif' => 'Tidak Aktif',
+                                ])
+                                ->required(),
+
+                            Select::make('kondisi')
+                                ->label('Kondisi')
+                                ->options([
+                                    'Baik' => 'Baik',
+                                    'Rusak Ringan' => 'Rusak Ringan',
+                                    'Rusak Berat' => 'Rusak Berat',
+                                ])
+                                ->required(),
+                        ])
+
+                        ->action(function (array $data, $records) {
+
+                            foreach ($records as $record) {
+                                $record->update([
+                                    'status_bmn' => $data['status_bmn'],
+                                    'kondisi' => $data['kondisi'],
+                                ]);
+                            }
+                        })
+
+                        ->deselectRecordsAfterCompletion(),
                     DeleteBulkAction::make(),
                 ]),
 

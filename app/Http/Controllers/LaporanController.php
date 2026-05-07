@@ -234,9 +234,10 @@ class LaporanController extends Controller
         $cellHeader = ['bgColor' => '66BBFF'];
         $center = ['alignment' => 'center'];
         $table->addCell(1000, $cellHeader)->addText('No', $headerStyle, $center);
-        $table->addCell(8000, $cellHeader)->addText('Barang', $headerStyle, $center);
+        $table->addCell(6000, $cellHeader)->addText('Barang', $headerStyle, $center);
         $table->addCell(2000, $cellHeader)->addText('Tanggal', $headerStyle, $center);
         $table->addCell(2000, $cellHeader)->addText('Jenis', $headerStyle, $center);
+        $table->addCell(6000, $cellHeader)->addText('Deskripsi', $headerStyle, $center);
         $table->addCell(2000, $cellHeader)->addText('Biaya', $headerStyle, $center);
 
         $no = 1;
@@ -253,9 +254,11 @@ class LaporanController extends Controller
             $table->addCell()->addText($m->barang->nama_barang ?? '-');
             $table->addCell()->addText($m->tanggal);
             $table->addCell()->addText($m->jenis);
+            $table->addCell()->addText($m->deskripsi ?? '-');
             $table->addCell()->addText($m->biaya);
         }
         $table->addRow();
+        $table->addCell()->addText('', $headerStyle, $center);
         $table->addCell()->addText('', $headerStyle, $center);
         $table->addCell()->addText('', $headerStyle, $center);
         $table->addCell()->addText('', $headerStyle, $center);
@@ -317,8 +320,8 @@ class LaporanController extends Controller
 
         $data = Rkbmn::with('barang')
             ->when($start && $end, function ($q) use ($start, $end) {
-                $q->whereDate('created_at', '>=', $start)
-                    ->whereDate('created_at', '<=', $end);
+                $q->whereDate('updated_at', '>=', $start)
+                    ->whereDate('updated_at', '<=', $end);
             })
             ->get();
 
@@ -428,6 +431,7 @@ class LaporanController extends Controller
         $table->addCell(8000, $cellHeader)->addText('Barang', $headerStyle, $center);
         $table->addCell(2000, $cellHeader)->addText('Tanggal', $headerStyle, $center);
         $table->addCell(2000, $cellHeader)->addText('Jenis', $headerStyle, $center);
+        $table->addCell(2000, $cellHeader)->addText('Deskripsi', $headerStyle, $center);
         $table->addCell(2000, $cellHeader)->addText('Biaya', $headerStyle, $center);
 
         $no = 1;
@@ -444,9 +448,11 @@ class LaporanController extends Controller
             $table->addCell()->addText($m->barang->nama_barang ?? '-');
             $table->addCell()->addText($m->tanggal);
             $table->addCell()->addText($m->jenis);
+            $table->addCell()->addText($m->deskripsi ?? '-');
             $table->addCell()->addText($m->biaya);
         }
         $table->addRow();
+        $table->addCell()->addText('', $headerStyle, $center);
         $table->addCell()->addText('', $headerStyle, $center);
         $table->addCell()->addText('', $headerStyle, $center);
         $table->addCell()->addText('', $headerStyle, $center);
@@ -467,8 +473,8 @@ class LaporanController extends Controller
         $no = 1;
         $data_rkbmn = Rkbmn::with('barang')
             ->when($start && $end, function ($q) use ($start, $end) {
-                $q->whereDate('created_at', '>=', $start)
-                    ->whereDate('created_at', '<=', $end);
+                $q->whereDate('updated_at', '>=', $start)
+                    ->whereDate('updated_at', '<=', $end);
             })
             ->get();
 
