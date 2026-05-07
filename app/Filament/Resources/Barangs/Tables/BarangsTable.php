@@ -121,11 +121,11 @@ class BarangsTable
                                 ->required(),
                         ])
 
-                        ->action(function (array $data_status, $records_status) {
-
-                            foreach ($records_status as $records_status) {
-                                $records_status->update([
-                                    'status_bmn' => $data_status['status_bmn'],
+                        ->action(function (array $data, $records) {
+                            $status = $data['status_bmn'];
+                            foreach ($records as $record) {
+                                $record->update([
+                                    'status_bmn' => $status,
                                 ]);
                             }
                         })
@@ -147,11 +147,11 @@ class BarangsTable
                                 ->required(),
                         ])
 
-                        ->action(function (array $data_kondisi, $records_kondisi) {
-
-                            foreach ($records_kondisi as $records_kondisi) {
-                                $records_kondisi->update([
-                                    'kondisi' => $data_kondisi['kondisi'],
+                        ->action(function (array $data, $records) {
+                            $kondisi = $data['kondisi'];
+                            foreach ($records as $record) {
+                                $record->update([
+                                    'kondisi' => $kondisi,
                                 ]);
                             }
                         })
