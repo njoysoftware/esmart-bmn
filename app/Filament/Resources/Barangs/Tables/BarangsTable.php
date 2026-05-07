@@ -48,6 +48,7 @@ class BarangsTable
                                 // Panggil service kita
                                 $service->upload($fileObject, 'tmp');
                                 // Import Excel dari URL
+                                config(['excel.temporary_files.local_path' => '/tmp']);
                                 Excel::import(new BarangImport, $fullPath);
                                 //    $disk->delete($filePath);
 
