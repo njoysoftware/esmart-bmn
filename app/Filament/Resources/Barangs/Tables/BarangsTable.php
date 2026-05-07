@@ -21,7 +21,7 @@ use Exception;
 use Illuminate\Support\Facades\File;
 use Filament\Actions\BulkAction;
 use Filament\Forms\Components\Select;
-
+use Filament\Support\Enums\Size as ActionSize;
 
 class BarangsTable
 {
@@ -30,28 +30,6 @@ class BarangsTable
         return $table
             ->headerActions(
                 [
-                    Action::make('import')
-                        ->label('Import Excel')
-                        ->color('success')
-                        ->icon('heroicon-o-arrow-up-tray')
-                        ->form([
-                            FileUpload::make('file')
-                                ->required()
-                                ->disk('tmp')
-                                ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv'])
-                        ])
-                        ->action(function (array $data, VercelBlobService $service) {
-                            $filePath  = $data['file'];
-                            $disk = Storage::disk('tmp');
-                            $fullPath = $disk->path($filePath);
-                            $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
-                            // Panggil service kita
-                            $service->upload($fileObject, 'tmp');
-                            // Import Excel dari URL
-                            config(['excel.temporary_files.local_path' => '/tmp']);
-                            Excel::import(new BarangImport, $fullPath);
-                            $disk->delete($filePath);
-                        }),
                     Action::make('download_template')
                         ->label('Download Template')
                         ->color('secondary')
@@ -158,61 +136,7 @@ class BarangsTable
                     BulkAction::make('update_kondisi')
                         ->label('Update Kondisi')
                         ->icon('heroicon-o-pencil-square')
-                        ->color('warning')
-
-                        ->form([
-                            Select::make('kondisi')
-                                ->label('Kondisi')
-                                ->options([
-                                    'Baik' => 'Baik',
-                                    'Rusak Ringan' => 'Rusak Ringan',
-                                    'Rusak Berat' => 'Rusak Berat',
-                                ])
-                                ->required(),
-                        ])
-
-                        ->action(function (array $data_kondisi, $records_kondisi) {
-
-                            foreach ($records_kondisi as $records_kondisi) {
-                                $records_kondisi->update([
-                                    'kondisi' => $data_kondisi['kondisi'],
-                                ]);
-                            }
-                        })
-                        ->deselectRecordsAfterCompletion(),
-                    DeleteBulkAction::make(),
-                ]),
-                BulkActionGroup::make([
-                    BulkAction::make('update_status')
-                        ->label('Update Status')
-                        ->icon('heroicon-o-pencil-square')
-                        ->color('warning')
-
-                        ->form([
-                            Select::make('status_bmn')
-                                ->label('Status')
-                                ->options([
-                                    'Aktif' => 'Aktif',
-                                    'Tidak Aktif' => 'Tidak Aktif',
-                                ])
-                                ->required(),
-                        ])
-
-                        ->action(function (array $data_status, $records_status) {
-
-                            foreach ($records_status as $records_status) {
-                                $records_status->update([
-                                    'status_bmn' => $data_status['status_bmn'],
-                                ]);
-                            }
-                        })
-
-                        ->deselectRecordsAfterCompletion(),
-
-                    BulkAction::make('update_kondisi')
-                        ->label('Update Kondisi')
-                        ->icon('heroicon-o-pencil-square')
-                        ->color('warning')
+                        ->color('success')
 
                         ->form([
                             Select::make('kondisi')
@@ -236,6 +160,34 @@ class BarangsTable
                         ->deselectRecordsAfterCompletion(),
                     DeleteBulkAction::make(),
                 ])
+                    ->Label('Tindakan Massal')
+                    ->icon('heroicon-m-ellipsis-vertical')
+                    ->size(ActionSize::Small),
+
+
+                Action::make('import')
+                    ->label('Import Excel')
+                    ->color('success')
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->form([
+                        FileUpload::make('file')
+                            ->required()
+                            ->disk('tmp')
+                            ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv'])
+                    ])
+                    ->action(function (array $data, VercelBlobService $service) {
+                        $filePath  = $data['file'];
+                        $disk = Storage::disk('tmp');
+                        $fullPath = $disk->path($filePath);
+                        $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
+                        // Panggil service kita
+                        $service->upload($fileObject, 'tmp');
+                        // Import Excel dari URL
+                        config(['excel.temporary_files.local_path' => '/tmp']);
+                        Excel::import(new BarangImport, $fullPath);
+                        $disk->delete($filePath);
+                    }),
+
             ]);
     }
 }
