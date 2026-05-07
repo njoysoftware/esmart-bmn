@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Barangs\Tables;
 
 use Filament\Actions\BulkActionGroup;
-use App\Filament\Pages\Laporan;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -29,15 +28,6 @@ class BarangsTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->headerActions(
-                [
-                    Action::make('laporan')
-                        ->label('Cetak Laporan')
-                        ->icon('heroicon-o-printer')
-                        ->url(Laporan::getUrl(), true)
-                        ->openUrlInNewTab()
-                ]
-            )
             ->columns([
                 TextColumn::make('kode_barang')
                     ->label('Kode Barang')
