@@ -39,6 +39,8 @@
         }
     ],
     "env": {
+        "TZ": "Asia/Jakarta",
+        "VERCEL": "1",
         "APP_ENV": "production",
         "APP_DEBUG": "true",
         "APP_URL": "https://esmart-bmn.vercel.app",
