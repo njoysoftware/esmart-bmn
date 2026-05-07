@@ -31,14 +31,14 @@ class BarangsTable
                         ->form([
                             FileUpload::make('file')
                                 ->required()
-                                ->disk('tmp')
+                                ->disk('public')
                                 ->directory('imports')
                                 ->acceptedFileTypes([
                                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                                 ])
                         ])
                         ->action(function (array $data) {
-                            $path = Storage::disk('tmp')->path($data['file']);
+                            $path = Storage::disk('public')->path('imports/' . $data['file']);
                             // Import Excel dari URL
                             Excel::import(new BarangImport, $path);
                         }),
