@@ -39,14 +39,14 @@ class BarangsTable
                                 ->disk('tmp')
                                 ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv'])
                         ])
-                        ->action(function (array $data) {
+                        ->action(function (array $data, VercelBlobService $service) {
                             $filePath  = $data['file'];
                             $disk = Storage::disk('tmp');
                             $fullPath = $disk->path($filePath);
-                            // $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
+                            $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
                             try {
                                 // Panggil service kita
-                                //   $result = $service->upload($fileObject);
+                                $service->upload($fileObject, 'uploads');
                                 // Import Excel dari URL
                                 Excel::import(new BarangImport, $fullPath);
                                 $disk->delete($filePath);
