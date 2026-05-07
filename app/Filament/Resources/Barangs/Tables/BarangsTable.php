@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Barangs\Tables;
 
 use Filament\Actions\BulkActionGroup;
-use App\Filament\Resources\Barangs\BarangResource;
+use App\Filament\Pages\Laporan;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -31,10 +31,11 @@ class BarangsTable
         return $table
             ->headerActions(
                 [
-                    Action::make('create')
-                        ->label('Tambah Barang')
-                        ->icon('heroicon-o-plus')
-                        ->url(BarangResource::getUrl('create')),
+                    Action::make('laporan')
+                        ->label('Cetak Laporan')
+                        ->icon('heroicon-o-printer')
+                        ->url(Laporan::getUrl(), true)
+                        ->openUrlInNewTab()
                 ]
             )
             ->columns([
