@@ -64,6 +64,7 @@ class LaporanController extends Controller
     private function tandaTangan($section)
     {
         $kanan = ['alignment' => 'right'];
+        $tte = ['spaceAfter' => 0, 'spaceBefore' => 0, 'lineHeight' => 1, 'padding-right' => 30];
         $rapat = ['spaceAfter' => 0];
 
         // Ambil tanggal otomatis
@@ -82,13 +83,13 @@ class LaporanController extends Controller
         $section->addText(
             'Mengetahui,',
             [],
-            $kanan + $rapat
+            $kanan + $tte + $rapat
         );
 
         $section->addText(
             'Kuasa Pengguna Barang',
             [],
-            $kanan + $rapat
+            $kanan + $tte + $rapat
         );
 
         // Jarak untuk tanda tangan
@@ -96,16 +97,16 @@ class LaporanController extends Controller
 
         // Nama pejabat
         $section->addText(
-            '.............................',
+            'Agus Prijambodo,S.H.',
             ['bold' => true],
-            $kanan + $rapat
+            $kanan + $tte + $rapat
         );
 
         // NIP
         $section->addText(
-            'NIP. .................',
+            'NIP.196807051989031021',
             [],
-            $kanan + $rapat
+            $kanan + $tte + $rapat
         );
     }
     // =========================
@@ -129,9 +130,10 @@ class LaporanController extends Controller
         $this->kopSurat($section);
         $start = request('start');
         $end = request('end');
-
+        $tanggal_start =  $start->translatedFormat('d F Y');
+        $tanggal_end =  $end->translatedFormat('d F Y');
         $section->addText('LAPORAN DATA BARANG', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
-        $section->addText("Periode: $start s/d $end");
+        $section->addText("Periode: $tanggal_start s/d $tanggal_end");
         $section->addTextBreak();
         $phpWord->addTableStyle('tableStyle', [
             'borderSize' => 6,
@@ -206,8 +208,13 @@ class LaporanController extends Controller
 
         // KOP
         $this->kopSurat($section);
+        $start = request('start');
+        $end = request('end');
+        $tanggal_start =  $start->translatedFormat('d F Y');
+        $tanggal_end =  $end->translatedFormat('d F Y');
 
         $section->addText('LAPORAN MAINTENANCE BMN', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
+        $section->addText("Periode: $tanggal_start s/d $tanggal_end");
         $section->addTextBreak();
 
         $phpWord->addTableStyle('tableStyle', [
@@ -229,12 +236,10 @@ class LaporanController extends Controller
         $table->addCell(2000, $cellHeader)->addText('Biaya', $headerStyle, $center);
 
         $no = 1;
-        $start = request('start');
-        $end = request('end');
         $data = Maintenance::with('barang')
             ->when($start && $end, function ($q) use ($start, $end) {
-                $q->whereDate('created_at', '>=', $start)
-                    ->whereDate('created_at', '<=', $end);
+                $q->whereDate('tanggal', '>=', $start)
+                    ->whereDate('tanggal', '<=', $end);
             })
             ->get();
 
@@ -277,8 +282,13 @@ class LaporanController extends Controller
 
         // KOP
         $this->kopSurat($section);
+        $start = request('start');
+        $end = request('end');
+        $tanggal_start =  $start->translatedFormat('d F Y');
+        $tanggal_end =  $end->translatedFormat('d F Y');
 
         $section->addText('LAPORAN RKBMN', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
+        $section->addText("Periode: $tanggal_start s/d $tanggal_end");
         $section->addTextBreak();
 
         $phpWord->addTableStyle('tableStyle', [
@@ -300,8 +310,7 @@ class LaporanController extends Controller
         $table->addCell(8000, $cellHeader)->addText('Alasan', $headerStyle, $center);
 
         $no = 1;
-        $start = request('start');
-        $end = request('end');
+
         $data = Rkbmn::with('barang')
             ->when($start && $end, function ($q) use ($start, $end) {
                 $q->whereDate('created_at', '>=', $start)
@@ -348,9 +357,11 @@ class LaporanController extends Controller
         $this->kopSurat($section);
         $start = request('start');
         $end = request('end');
+        $tanggal_start =  $start->translatedFormat('d F Y');
+        $tanggal_end =  $end->translatedFormat('d F Y');
 
         $section->addText('LAPORAN BMN TERPADU', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
-        $section->addText("Periode: $start s/d $end");
+        $section->addText("Periode: $tanggal_start s/d $tanggal_end");
 
         $section->addTextBreak(2);
         // A. Barang
@@ -422,8 +433,8 @@ class LaporanController extends Controller
         $no = 1;
         $data_mainten = Maintenance::with('barang')
             ->when($start && $end, function ($q) use ($start, $end) {
-                $q->whereDate('created_at', '>=', $start)
-                    ->whereDate('created_at', '<=', $end);
+                $q->whereDate('tanggal', '>=', $start)
+                    ->whereDate('tanggal', '<=', $end);
             })
             ->get();
 
