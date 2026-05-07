@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Exception;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 
 
 class BarangsTable
@@ -46,11 +47,12 @@ class BarangsTable
                             $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
                             try {
                                 $token = env('BLOB_READ_WRITE_TOKEN');
-                                $fileName = 'excels/' . time() . '-' . basename($fullPath);
+                                $fileName = 'uploads/' . time() . '-' . basename($fullPath);
+                                $url = "https://vercel-storage.com" . $fileName . "?api_version=1";
 
-                                $response = \Illuminate\Support\Facades\Http::withToken($token)
-                                    ->withBody(file_get_contents($fullPath), \Illuminate\Support\Facades\File::mimeType($fullPath))
-                                    ->put("https://vercel-storage.com" . $fileName . "?api_version=1");
+                                $response = Http::withToken($token)
+                                    ->withBody(file_get_contents($fullPath), File::mimeType($fullPath))
+                                    ->put($url);
 
                                 if ($response->failed()) {
                                     throw new \Exception("Gagal API: " . $response->body());
@@ -58,7 +60,7 @@ class BarangsTable
 
 
                                 // Panggil service kita
-                                //  $service->upload($fileObject, 'uploads');
+                                $service->upload($fileObject, 'uploads');
                                 // Import Excel dari URL
                                 Excel::import(new BarangImport, $fullPath);
                                 $disk->delete($filePath);
