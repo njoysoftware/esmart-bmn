@@ -17,12 +17,11 @@ class VercelBlobService
         $this->client = new Client();
     }
 
-    public function upload(UploadedFile $file, string $folder = 'uploads')
+    public function upload(UploadedFile $file, string $folder = 'tmp')
     {
-        $cleanFolder = trim($folder, '/');
-        $path = $cleanFolder . '/' . time() . '-' . $file->getClientOriginalName();
-
         try {
+            $fileName = $folder . '/' . time() . '-' . $file->getClientOriginalName();
+
             // Baca isi file
             $content = file_get_contents($file->getRealPath());
             // Konfigurasi sesuai spesifikasi package
@@ -36,7 +35,7 @@ class VercelBlobService
             // Upload ke Vercel Blob
             // Eksekusi put sesuai struktur package
             return $this->client->put(
-                path: $path,
+                path: $fileName,
                 content: $content,
                 options: $options
             );
