@@ -33,12 +33,13 @@ class BarangsTable
                                 ->required()
                                 ->disk('public')
                                 ->directory('imports')
+                                ->moveFile()
                                 ->acceptedFileTypes([
                                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                                 ])
                         ])
                         ->action(function (array $data) {
-                            $path = Storage::disk('public')->path('imports/' . $data['file']);
+                            $path = public_path('imports/' . $data['file']);
                             // Import Excel dari URL
                             Excel::import(new BarangImport, $path);
                         }),
