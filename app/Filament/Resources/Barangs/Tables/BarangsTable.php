@@ -15,7 +15,6 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use App\Models\Lokasi;
 use App\Services\VercelBlobService;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Exception;
@@ -44,24 +43,12 @@ class BarangsTable
                             $disk = Storage::disk('tmp');
                             $fullPath = $disk->path($filePath);
                             $fileObject = new UploadedFile($fullPath, basename($fullPath), File::mimeType($fullPath), null, true);
-                            try {
-                                // Panggil service kita
-                                $service->upload($fileObject, 'tmp');
-                                // Import Excel dari URL
-                                config(['excel.temporary_files.local_path' => '/tmp']);
-                                Excel::import(new BarangImport, $fullPath);
-                                //    $disk->delete($filePath);
-
-                                Notification::make()
-                                    ->title('Berhasil!')
-                                    ->body('Data berhasil diimpor.')
-                                    ->success()
-                                    ->send();
-                            } catch (Exception $e) {
-                                // Tangani error jika upload gagal
-                                // Contoh: Log error atau tampilkan pesan kepada pengguna
-                                throw new Exception("Gagal unggah ke Data: " . $e->getMessage());
-                            }
+                            // Panggil service kita
+                            $service->upload($fileObject, 'tmp');
+                            // Import Excel dari URL
+                            config(['excel.temporary_files.local_path' => '/tmp']);
+                            Excel::import(new BarangImport, $fullPath);
+                            $disk->delete($filePath);
                         }),
                     Action::make('download_template')
                         ->label('Download Template')

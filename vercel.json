@@ -27,7 +27,7 @@
   ],
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
+        "APP_DEBUG": "false",
         "APP_URL": "https://esmart-bmn.vercel.app",
         "APP_KEY":"base64:ru3dSPJstQeV121JGqcaoh5LNlabKfF99fombagQoXI=",
  
