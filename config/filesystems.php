@@ -41,14 +41,14 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/') . '/storage',
+            'url' => rtrim(env('APP_URL', 'https://esmart-bmn.vercel.app/'), '/') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
         ],
         'tmp' => [
             'driver' => 'local',
-            'root' => storage_path('app/tmp'),
+            'root' => env('VERCEL') ? '/tmp' : storage_path('app'),
             'throw' => false,
             'report' => false,
         ],
