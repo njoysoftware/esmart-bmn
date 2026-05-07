@@ -30,12 +30,10 @@ class BarangsTable
         return $table
             ->headerActions(
                 [
-                    Action::make('download_template')
-                        ->label('Download Template')
-                        ->color('secondary')
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->url(route('template.download'), true)
-                        ->openUrlInNewTab()
+                    Action::make('create')
+                        ->label('Tambah Barang')
+                        ->icon('heroicon-o-plus')
+                        ->url(route('filament.resources.barangs.create')),
                 ]
             )
             ->columns([
@@ -107,6 +105,7 @@ class BarangsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    //BULK STATUS
                     BulkAction::make('update_status')
                         ->label('Update Status')
                         ->icon('heroicon-o-pencil-square')
@@ -131,7 +130,7 @@ class BarangsTable
                         })
 
                         ->deselectRecordsAfterCompletion(),
-
+                    //BULK KONDISI
                     BulkAction::make('update_kondisi')
                         ->label('Update Kondisi')
                         ->icon('heroicon-o-pencil-square')
@@ -156,17 +155,17 @@ class BarangsTable
                             }
                         })
                         ->deselectRecordsAfterCompletion(),
+                    //BULK DELETE
                     DeleteBulkAction::make(),
                 ])
                     ->Label('Tindakan Massal')
                     ->icon('heroicon-m-ellipsis-vertical')
-                    ->color('warning')
+                    ->color('primary')
                     ->size(ActionSize::Small),
 
-
+                //IMPORT EXCEL
                 Action::make('import')
                     ->label('Import Excel')
-                    ->color('primary')
                     ->icon('heroicon-o-arrow-up-tray')
                     ->form([
                         FileUpload::make('file')
@@ -186,7 +185,13 @@ class BarangsTable
                         Excel::import(new BarangImport, $fullPath);
                         $disk->delete($filePath);
                     }),
-
+                //DOWNLOAD TEMPLATE
+                Action::make('download_template')
+                    ->label('Download Template')
+                    ->color('secondary')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(route('template.download'), true)
+                    ->openUrlInNewTab()
             ]);
     }
 }
